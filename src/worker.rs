@@ -1,6 +1,7 @@
 use actix_web::{get, web, HttpResponse, Responder};
 use reqwest::{header::HeaderMap, Client};
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 
 use crate::config::{self, Config};
 
@@ -55,13 +56,13 @@ pub async fn query(
     headers.insert("Content-Type", "application/json".parse().unwrap());
 
     let response = client
-        .get(format!("{}", data.gql_api))
+        .post(format!("{}", data.gql_api))
         .headers(headers)
-        .body(query.to_string())
+        .json(&json!({
+          "query": query.to_string()
+        }))
         .send()
         .await;
-
-    println!("{}", format!("{}", query));
 
     match response {
         Ok(resp) => {
