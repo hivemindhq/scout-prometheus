@@ -1,4 +1,5 @@
 mod config;
+mod types;
 mod worker;
 
 use actix_web::{

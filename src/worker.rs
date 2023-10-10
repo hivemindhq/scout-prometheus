@@ -1,9 +1,10 @@
 use actix_web::{get, web, HttpResponse, Responder};
 use reqwest::{header::HeaderMap, Client};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
+use serde_json::{json, Value};
 
-use crate::config::{self, Config};
+use crate::config::Config;
+use crate::types::Team;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct QueryRequest {
@@ -67,11 +68,18 @@ pub async fn query(
     match response {
         Ok(resp) => {
             let text = resp.text().await.unwrap();
-            Ok(HttpResponse::Ok().body(text))
+
+            let text: Vec<Team> = serde_json::from_str(&text).unwrap();
+
+            for team in text.into_iter() {
+                println!("{:?}", team)
+            }
+
+            Ok(HttpResponse::Ok().body("hiiiii"))
         }
         Err(err) => {
             eprintln!("Error sending GraphQL request: {:?}", err);
-            Ok(HttpResponse::BadRequest().finish())
+            Ok(HttpResponse::BadRequest().body(format!("{}", err)))
         }
     }
 }
