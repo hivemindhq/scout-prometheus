@@ -53,6 +53,13 @@ pub async fn query(
         body.id, body.year, body.year, data.season_gql_id
     );
 
+    let request = format!(
+        "https://api.ftcscout.org/rest/v1/events/{}/{}/teams",
+        body.year, body.id
+    );
+
+    println!("{}", request);
+
     let mut headers = HeaderMap::new();
     headers.insert("Content-Type", "application/json".parse().unwrap());
 
