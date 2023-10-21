@@ -63,9 +63,11 @@ pub async fn query(
     let mut headers = HeaderMap::new();
     headers.insert("Content-Type", "application/json".parse().unwrap());
 
+    let rest_response = client.get(request).headers(headers.clone()).send().await?;
+
     let response = client
         .post(format!("{}", data.gql_api))
-        .headers(headers)
+        .headers(headers.clone())
         .json(&json!({
           "query": query.to_string()
         }))
