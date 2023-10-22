@@ -1294,6 +1294,7 @@ dependencies = [
  "actix-web-prometheus",
  "anyhow",
  "dotenv",
+ "lazy_static",
  "prometheus",
  "reqwest",
  "reqwest-graphql",

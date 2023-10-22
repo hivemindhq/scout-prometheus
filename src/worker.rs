@@ -12,10 +12,6 @@ pub struct QueryRequest {
     id: String,
 }
 
-pub async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("hello world!!")
-}
-
 #[get("/query/{year}/{id}")]
 pub async fn query(
     data: web::Data<Config>,
@@ -38,7 +34,8 @@ pub async fn query(
                     wins
                     losses
                     rank
-                    average {{
+                    qualMatchesPlayed
+                    avg {{
                       autoPoints
                       totalPoints
                     }}
